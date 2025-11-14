@@ -260,13 +260,15 @@ end
     local map = Tabs.Race:AddToggle("AroundTheMapRace", {Title = "Auto Around The Map Race", Default = false })
 
     map:OnChanged(function(NO)
-
+if NO then
 Fluent:Notify({
     Title = "Info [Auto Around The Map Race]",
-    Content = "This was down for a while wait until i fix this problem (I was too lazy lol).",
+    Content = "This function was down for a while, So wait until i fix this problem (I was too lazy lol).",
     Duration = 5
 })
-    
+else
+warn("Off")
+end  
     local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
 if bool then
     if not highlight3 then
@@ -828,12 +830,15 @@ end
 
     highway:OnChanged(function(bool)
 
-
+if bool then
 Fluent:Notify({
     Title = "Info [Auto Highway Race]",
     Content = "This auto race still have some bugs that make you farm slower so use other one to grinding :D.",
     Duration = 5
 })
+else
+warn("Off")
+end
 
     local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
 if bool then
