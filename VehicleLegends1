@@ -154,7 +154,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -171,7 +171,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Circuit Race"):GetAttribute("RaceActive") then
 break
 end            
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -224,7 +224,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -241,7 +241,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Mountain Dash"):GetAttribute("RaceActive") then
 break
 end           
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -294,7 +294,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -311,7 +311,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Around The Map"):GetAttribute("RaceActive") then
 break
 end          
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -364,7 +364,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -381,7 +381,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Miami City Circuit"):GetAttribute("RaceActive") then
 break
 end         
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -434,7 +434,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -451,7 +451,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Beach Dash"):GetAttribute("RaceActive") then
 break
 end              
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -504,7 +504,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -521,7 +521,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Desert Race"):GetAttribute("RaceActive") then
 break
 end   
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -574,7 +574,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -591,7 +591,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Drag Race"):GetAttribute("RaceActive") then
 break
 end
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -644,7 +644,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -661,7 +661,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Offroad Race"):GetAttribute("RaceActive") then
 break
 end     
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -714,7 +714,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -731,7 +731,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Tropical Dash"):GetAttribute("RaceActive") then
 break
 end        
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -784,7 +784,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -801,7 +801,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Circuit Moto Race"):GetAttribute("RaceActive") then
 break
 end     
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -855,7 +855,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -869,7 +869,7 @@ TweenValue.Changed:Connect(function()
     car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
     car:PivotTo(TweenValue.Value)
 end)        
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
@@ -923,7 +923,7 @@ if not checkpointsFolder then break end
 local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
 if not checkpoint then break end
 
-local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
 
 local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
  local TweenService = game:GetService("TweenService")
@@ -940,7 +940,7 @@ end)
 if not game:GetService("Workspace").Races:WaitForChild("Boat Race"):GetAttribute("RaceActive") then
 break
 end            
-local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,0,0)})
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,0,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
 end
