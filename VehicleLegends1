@@ -1,0 +1,1150 @@
+local Rss = game:GetService("ReplicatedStorage")
+local Li = game:GetService("Lighting")
+local plr = game:GetService("Players")
+local user, player = plr.LocalPlayer, plr.LocalPlayer
+local char = user.Character or user.CharacterAdded:Wait()
+local root = char:FindFirstChild("HumanoidRootPart")
+local TweenService = game:GetService("TweenService")
+local Workspace = game:GetService("Workspace")
+local Vehicles = Workspace:WaitForChild("Vehicles")
+local RunService = game:GetService("RunService")
+
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+
+local RacesQueueData = {
+    " ",
+    "Air Race N/A",
+    "Around The Map N/A",
+    "Beach Dash N/A",
+    "Boat Race N/A",
+    "Circuit Moto Race N/A",
+    "Circuit Race N/A",
+    "Desert Race N/A",
+    "Drag Race N/A",
+    "Highway Race N/A",
+    "Miami City Circuit N/A",
+    "Mountain Dash N/A",
+    "Offroad Race N/A",
+    "Tropical Dash N/A"
+}
+
+
+_G.FarmSped = 250
+
+local function WaitUntilAlive()
+	repeat
+		task.wait()
+	until user.Character and user.Character:FindFirstChild("HumanoidRootPart") and user.Character:FindFirstChildOfClass("Humanoid")
+	char = user.Character
+	root = char:FindFirstChild("HumanoidRootPart")
+end
+
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+ 
+local Window = Fluent:CreateWindow({
+    Title = "Anchor Hub",
+    SubTitle = "EXAM SCRIPT NOR RELEASE YET YOU FOOL.",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(500, 320),
+    Acrylic = false,
+    Theme = "Darker",
+    MinimizeKey = Enum.KeyCode.K
+})
+ 
+local Options = Fluent.Options
+ 
+local Tabs = {
+    Home = Window:AddTab({ Title = "Home", Icon = "user" }),
+    Setting = Window:AddTab({ Title = "Setting", Icon = "settings" }),
+    Race = Window:AddTab({ Title = "Vehicle racing", Icon = "flag" }),
+    BoatRace = Window:AddTab({ Title = "Boat racing", Icon = "sailboat" }),
+    PlaneRace = Window:AddTab({ Title = "Plane racing", Icon = "plane" }),
+    Vehi = Window:AddTab({ Title = "Vehicle", Icon = "car" }),
+    Player = Window:AddTab({ Title = "Player", Icon = "users" }),
+    Races = Window:AddTab({ Title = "Races Status", Icon = "file" })
+}
+
+
+        Tabs.Home:AddButton({
+        Title = "Copy CFrame",
+        Description = "lol.",
+        Callback = function()
+        setclipboard(root.CFrame)
+
+        Fluent:Notify({
+         Title = "Info",
+         Content = "Your humanoidrootpart cframe has been copied.",
+         Duration = 5
+         })
+        end
+    })
+
+
+        Tabs.Home:AddButton({
+        Title = "Copy Position",
+        Description = "lol.",
+        Callback = function()
+        setclipboard(root.Position)
+
+        Fluent:Notify({
+         Title = "Info",
+         Content = "Your humanoidrootpart position has been copied.",
+         Duration = 5
+         })
+        end
+    })
+
+    local speed = Tabs.Setting:AddDropdown("FarmSped", {
+        Title = "Auto Race Speed",
+        Values = {"250", "300", "325", "350"},
+        Multi = false,
+        Default = 1,
+    })
+
+    speed:OnChanged(function(Value)
+        if Value == "250" then
+            _G.FarmSped = 250
+        elseif Value == "300" then
+            _G.FarmSped = 300
+        elseif Value == "325" then
+            _G.FarmSped = 325
+        elseif Value == "350" then
+            _G.FarmSped = 350
+        end
+    end)
+
+    local highlight1
+
+    local circuit = Tabs.Race:AddToggle("CircuitRace", {Title = "Auto Circuit Race", Default = false })
+
+    circuit:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight1 then
+        highlight1 = Instance.new("Highlight")
+        highlight1.Parent = car
+        highlight1.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight1.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight1.FillTransparency = 0.5
+        highlight1.OutlineTransparency = 0
+        highlight1.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight1 then
+        highlight1:Destroy()
+        highlight1 = nil
+    end
+end
+
+    getfenv().Circuit = (bool and true or false)
+while getfenv().Circuit do
+    if getfenv().Circuit == false and not game:GetService("Workspace").Races:WaitForChild("Circuit Race"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Circuit Race"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/_G.FarmSped, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Circuit Race"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)    
+if not game:GetService("Workspace").Races:WaitForChild("Circuit Race"):GetAttribute("RaceActive") then
+break
+end            
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(535, 6, -1592)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(535, 6, -1592))
+wait(1)
+end
+end
+    end)
+
+    local highlight2
+
+    local mountain = Tabs.Race:AddToggle("MountainRace", {Title = "Auto Mountain Dash Race", Default = false })
+
+    mountain:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight2 then
+        highlight2 = Instance.new("Highlight")
+        highlight2.Parent = car
+        highlight2.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight2.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight2.FillTransparency = 0.5
+        highlight2.OutlineTransparency = 0
+        highlight2.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight2 then
+        highlight2:Destroy()
+        highlight2 = nil
+    end
+end
+
+    getfenv().Mountain = (bool and true or false)
+while getfenv().Mountain do
+if getfenv().Mountain == false and not game:GetService("Workspace").Races:WaitForChild("Mountain Dash"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Mountain Dash"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/_G.FarmSped, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Mountain Dash"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)       
+if not game:GetService("Workspace").Races:WaitForChild("Mountain Dash"):GetAttribute("RaceActive") then
+break
+end           
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(509, 6, -1301)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(509, 6, -1301))
+wait(1)
+end
+end
+    end)
+
+    local highlight3
+
+    local map = Tabs.Race:AddToggle("AroundTheMapRace", {Title = "Auto Around The Map Race", Default = false })
+
+    map:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight3 then
+        highlight3 = Instance.new("Highlight")
+        highlight3.Parent = car
+        highlight3.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight3.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight3.FillTransparency = 0.5
+        highlight3.OutlineTransparency = 0
+        highlight3.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight3 then
+        highlight3:Destroy()
+        highlight3 = nil
+    end
+end
+
+    getfenv().Around = (bool and true or false)
+while getfenv().Around do
+if getfenv().Around == false and not game:GetService("Workspace").Races:WaitForChild("Around The Map"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Around The Map"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/_G.FarmSped, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Around The Map"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)    
+if not game:GetService("Workspace").Races:WaitForChild("Around The Map"):GetAttribute("RaceActive") then
+break
+end          
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(734, 6, -1365)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(734, 6, -1365))
+wait(1)
+end
+end
+    end)
+
+    local highlight4
+
+    local miami = Tabs.Race:AddToggle("MiamiCityCircuitRace", {Title = "Auto Miami City Circuit Race", Default = false })
+
+    miami:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight4 then
+        highlight4 = Instance.new("Highlight")
+        highlight4.Parent = car
+        highlight4.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight4.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight4.FillTransparency = 0.5
+        highlight4.OutlineTransparency = 0
+        highlight4.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight4 then
+        highlight4:Destroy()
+        highlight4 = nil
+    end
+end
+
+    getfenv().Miami = (bool and true or false)
+while getfenv().Miami do
+if getfenv().Miami == false and not game:GetService("Workspace").Races:WaitForChild("Miami City Circuit"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Miami City Circuit"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/_G.FarmSped, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Miami City Circuit"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)      
+if not game:GetService("Workspace").Races:WaitForChild("Miami City Circuit"):GetAttribute("RaceActive") then
+break
+end         
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(748, 6, -1451)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(748, 6, -1451))
+wait(1)
+end
+end
+    end)
+
+    local highlight5
+
+        local beach = Tabs.Race:AddToggle("BeachDashRace", {Title = "Auto Beach Dash Race", Default = false })
+
+    beach:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight5 then
+        highlight5 = Instance.new("Highlight")
+        highlight5.Parent = car
+        highlight5.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight5.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight5.FillTransparency = 0.5
+        highlight5.OutlineTransparency = 0
+        highlight5.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight5 then
+        highlight5:Destroy()
+        highlight5 = nil
+    end
+end
+
+    getfenv().Beach = (bool and true or false)
+while getfenv().Beach do
+if getfenv().Beach == false and not game:GetService("Workspace").Races:WaitForChild("Beach Dash"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Beach Dash"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/_G.FarmSped, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Beach Dash"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end) 
+if not game:GetService("Workspace").Races:WaitForChild("Beach Dash"):GetAttribute("RaceActive") then
+break
+end              
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(523, 5, -1387)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(523, 5, -1387))
+wait(1)
+end
+end
+    end)
+
+    local highlight6
+
+        local desert = Tabs.Race:AddToggle("DesertRace", {Title = "Auto Desert Race", Default = false })
+
+    desert:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight6 then
+        highlight6 = Instance.new("Highlight")
+        highlight6.Parent = car
+        highlight6.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight6.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight6.FillTransparency = 0.5
+        highlight6.OutlineTransparency = 0
+        highlight6.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight6 then
+        highlight6:Destroy()
+        highlight6 = nil
+    end
+end
+
+    getfenv().Desert = (bool and true or false)
+while getfenv().Desert do
+if getfenv().Desert == false and not game:GetService("Workspace").Races:WaitForChild("Desert Race"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Desert Race"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/_G.FarmSped, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Desert Race"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)         
+if not game:GetService("Workspace").Races:WaitForChild("Desert Race"):GetAttribute("RaceActive") then
+break
+end   
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(742, 5, -1535)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(742, 5, -1535))
+wait(1)
+end
+end
+    end)
+
+    local highlight7
+
+        local drag = Tabs.Race:AddToggle("DragRace", {Title = "Auto Drag Race", Default = false })
+
+    drag:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight7 then
+        highlight7 = Instance.new("Highlight")
+        highlight7.Parent = car
+        highlight7.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight7.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight7.FillTransparency = 0.5
+        highlight7.OutlineTransparency = 0
+        highlight7.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight7 then
+        highlight7:Destroy()
+        highlight7 = nil
+    end
+end
+
+    getfenv().Drag = (bool and true or false)
+while getfenv().Drag do
+if getfenv().Drag == false and not game:GetService("Workspace").Races:WaitForChild("Drag Race"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Drag Race"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/300, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Drag Race"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)            
+if not game:GetService("Workspace").Races:WaitForChild("Drag Race"):GetAttribute("RaceActive") then
+break
+end
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(752, 6, -1808)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(752, 6, -1808))
+wait(1)
+end
+end
+    end)
+
+    local highlight8
+
+        local offroad = Tabs.Race:AddToggle("OffroadRace", {Title = "Auto Offroad Race", Default = false })
+
+    offroad:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight8 then
+        highlight8 = Instance.new("Highlight")
+        highlight8.Parent = car
+        highlight8.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight8.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight8.FillTransparency = 0.5
+        highlight8.OutlineTransparency = 0
+        highlight8.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight8 then
+        highlight8:Destroy()
+        highlight8 = nil
+    end
+end
+
+    getfenv().Offroad = (bool and true or false)
+while getfenv().Offroad do
+if getfenv().Offroad == false and not game:GetService("Workspace").Races:WaitForChild("Offroad Race"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Offroad Race"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/200, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Offroad Race"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)       
+if not game:GetService("Workspace").Races:WaitForChild("Offroad Race"):GetAttribute("RaceActive") then
+break
+end     
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(512, 8, -1482)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(512, 8, -1482))
+wait(1)
+end
+end
+    end)
+
+    local highlight9
+
+        local tropical = Tabs.Race:AddToggle("TropicalDashRace", {Title = "Auto Tropical Dash Race", Default = false })
+
+    tropical:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight9 then
+        highlight9 = Instance.new("Highlight")
+        highlight9.Parent = car
+        highlight9.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight9.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight9.FillTransparency = 0.5
+        highlight9.OutlineTransparency = 0
+        highlight9.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight9 then
+        highlight9:Destroy()
+        highlight9 = nil
+    end
+end
+
+    getfenv().Tropical = (bool and true or false)
+while getfenv().Tropical do
+if getfenv().Tropical == false and not game:GetService("Workspace").Races:WaitForChild("Tropical Dash"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Tropical Dash"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/200, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Tropical Dash"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)    
+if not game:GetService("Workspace").Races:WaitForChild("Tropical Dash"):GetAttribute("RaceActive") then
+break
+end        
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(554, 8, -1716)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(554, 8, -1716))
+wait(1)
+end
+end
+    end)
+
+    local highlight10
+
+        local circuitmoto = Tabs.Race:AddToggle("TropicalDashRace", {Title = "Auto Circuit Moto Race", Default = false })
+
+    circuitmoto:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight10 then
+        highlight10 = Instance.new("Highlight")
+        highlight10.Parent = car
+        highlight10.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight10.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight10.FillTransparency = 0.5
+        highlight10.OutlineTransparency = 0
+        highlight10.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight10 then
+        highlight10:Destroy()
+        highlight10 = nil
+    end
+end
+
+    getfenv().CircuitMoto = (bool and true or false)
+while getfenv().CircuitMoto do
+if getfenv().CircuitMoto == false and not game:GetService("Workspace").Races:WaitForChild("Circuit Moto Race"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Circuit Moto Race"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/200, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Circuit Moto Race"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)     
+if not game:GetService("Workspace").Races:WaitForChild("Circuit Moto Race"):GetAttribute("RaceActive") then
+break
+end     
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(591, 8, -1805)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(591, 8, -1805))
+wait(1)
+end
+end
+    end)
+
+
+        local highlight11
+
+        local highway = Tabs.Race:AddToggle("HighwayRace", {Title = "Auto Highway Race", Default = false })
+
+    highway:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight11 then
+        highlight11 = Instance.new("Highlight")
+        highlight11.Parent = car
+        highlight11.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight11.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight11.FillTransparency = 0.5
+        highlight11.OutlineTransparency = 0
+        highlight11.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight11 then
+        highlight11:Destroy()
+        highlight11 = nil
+    end
+end
+
+    getfenv().Highway = (bool and true or false)
+while getfenv().Highway do
+if getfenv().Highway == false and not game:GetService("Workspace").Races:WaitForChild("Highway Race"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Highway Race"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/900, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Highway Race"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)      
+if not game:GetService("Workspace").Races:WaitForChild("Highway Race"):GetAttribute("RaceActive") then
+break
+end      
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(749, 6, -1731)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(749, 6, -1731))
+wait(1)
+end
+end
+    end)
+
+
+    local highlight12
+
+    local boat = Tabs.BoatRace:AddToggle("BoatRace", {Title = "Auto Boat Race", Default = false })
+
+    boat:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight12 then
+        highlight12 = Instance.new("Highlight")
+        highlight12.Parent = car
+        highlight12.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight12.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight12.FillTransparency = 0.5
+        highlight12.OutlineTransparency = 0
+        highlight12.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight12 then
+        highlight12:Destroy()
+        highlight12 = nil
+    end
+end
+
+    getfenv().Boat = (bool and true or false)
+while getfenv().Boat do
+if getfenv().Boat == false and not game:GetService("Workspace").Races:WaitForChild("Boat Race"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Boat Race"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display.Checkpoint.Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/_G.FarmSped, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+    if not game:GetService("Workspace").Races:WaitForChild("Boat Race"):GetAttribute("RaceActive") then
+    return
+    end
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)   
+if not game:GetService("Workspace").Races:WaitForChild("Boat Race"):GetAttribute("RaceActive") then
+break
+end            
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,0,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(189, -6, -1127)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(189, -6, -1127))
+wait(1)
+end
+end
+    end)
+
+    local highlight13
+
+        local plane = Tabs.PlaneRace:AddToggle("AirRace", {Title = "Auto Air Race", Default = false })
+
+    plane:OnChanged(function(bool)
+
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+if bool then
+    if not highlight13 then
+        highlight13 = Instance.new("Highlight")
+        highlight13.Parent = car
+        highlight13.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight13.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight13.FillTransparency = 0.5
+        highlight13.OutlineTransparency = 0
+        highlight13.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight13 then
+        highlight13:Destroy()
+        highlight13 = nil
+    end
+end
+
+    getfenv().Plane = (bool and true or false)
+while getfenv().Plane do
+if getfenv().Plane == false and not game:GetService("Workspace").Races:WaitForChild("Air Race"):GetAttribute("RaceActive") then return end
+task.wait()
+if game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == true and game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Text == "1" and game:GetService("Workspace").Races:WaitForChild("Air Race"):GetAttribute("RaceActive") then
+task.wait(1)
+local checks = #game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints"):GetChildren()
+for a=1,2 do
+for i=1,checks do
+local checkpointsFolder = game:GetService("Workspace").RaceProps:FindFirstChild("Checkpoints")
+if not checkpointsFolder then break end
+
+local checkpoint = checkpointsFolder:FindFirstChild(tostring(i))
+if not checkpoint then break end
+
+local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - checkpoint.Display:FindFirstChildOfClass("Model").Border.Position).magnitude
+
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+ local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/450, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()        
+TweenValue.Changed:Connect(function()
+
+    if not game:GetService("Workspace").Races:WaitForChild("Air Race"):GetAttribute("RaceActive") then
+    return
+    end
+
+    car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+    car:PivotTo(TweenValue.Value)
+end)         
+if not game:GetService("Workspace").Races:WaitForChild("Air Race"):GetAttribute("RaceActive") then
+break
+end       
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display:FindFirstChildOfClass("Model").Border.CFrame * CFrame.new(0,0,0)})
+OnTween:Play()
+ OnTween.Completed:Wait()
+end
+end
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Races.Timer.Visible == false and not checkpointsFolder and user:DistanceFromCharacter(Vector3.new(3876, 11, -3061)) > 15 then
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.zero
+car:PivotTo(CFrame.new(3876, 11, -3061))
+wait(1)
+end
+end
+    end)
+
+    local highlight14
+
+    local DriveFarm = Tabs.Vehi:AddToggle("AutoDriveFarm", {Title = "Auto Farm (Drive)", Default = false })
+
+    DriveFarm:OnChanged(function(bool)
+    local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+
+if bool then
+    if not highlight14 then
+        highlight14 = Instance.new("Highlight")
+        highlight14.Parent = car
+        highlight14.FillColor = Color3.fromRGB(0, 0, 255)
+        highlight14.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight14.FillTransparency = 0.5
+        highlight14.OutlineTransparency = 0
+        highlight14.DepthMode = Enum.HighlightDepthMode.Occluded
+    end
+else
+    if highlight14 then
+        highlight14:Destroy()
+        highlight14 = nil
+    end
+end
+
+
+        getfenv().autofarm = (bool and true or false)
+        while getfenv().autofarm do
+        local chr = char
+local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
+car.PrimaryPart=car.Weight
+dist = (chr.HumanoidRootPart.Position-car.PrimaryPart.CFrame.LookVector*1500).Magnitude
+local TweenService = game:GetService("TweenService")
+local TweenInfoToUse = TweenInfo.new(dist/375, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, true, 0)
+
+local TweenValue = Instance.new("CFrameValue")
+TweenValue.Value = car:GetPrimaryPartCFrame()
+        
+TweenValue.Changed:Connect(function()
+car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
+car:SetPrimaryPartCFrame(TweenValue.Value)
+end)
+local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=car.PrimaryPart.CFrame+car.PrimaryPart.CFrame.LookVector*1500})
+OnTween:Play()
+OnTween.Completed:Wait()
+end
+    end)
+
+local Queque = Tabs.Races:AddParagraph({
+    Title = "Racing Queue Status",
+    Content = table.concat(RacesQueueData, "\n")
+})
+
+local textLabel
+for _, v in pairs(Queque) do
+    if typeof(v) == "Instance" and v:IsA("TextLabel") then
+        textLabel = v
+        break
+    end
+end
+
+local function getParagraphLabel(paragraph)
+    if typeof(paragraph) == "table" then
+        for _, v in pairs(paragraph) do
+            if typeof(v) == "Instance" and v:IsA("TextLabel") then
+                return v
+            end
+        end
+    elseif typeof(paragraph) == "Instance" and paragraph:IsA("TextLabel") then
+        return paragraph
+    end
+    return nil
+end
+
+spawn(function()
+    RunService.Heartbeat:Connect(function()
+        local RaceFolder = workspace:FindFirstChild("Races")
+        if RaceFolder then
+        RacesQueueData[2] = RaceFolder:FindFirstChild("Air Race"):GetAttribute("RaceActive") and "Air Race  🟢" or "Air Race  🔴"
+        RacesQueueData[3] = RaceFolder:FindFirstChild("Around The Map"):GetAttribute("RaceActive") and "Around The Map  🟢" or "Around The Map  🔴"
+        RacesQueueData[4] = RaceFolder:FindFirstChild("Beach Dash"):GetAttribute("RaceActive") and "Beach Dash  🟢" or "Beach Dash  🔴"
+        RacesQueueData[5] = RaceFolder:FindFirstChild("Boat Race"):GetAttribute("RaceActive") and "Boat Race  🟢" or "Boat Race  🔴"
+        RacesQueueData[6] = RaceFolder:FindFirstChild("Circuit Moto Race"):GetAttribute("RaceActive") and "Circuit Moto Race  🟢" or "Circuit Moto Race  🔴"
+        RacesQueueData[7] = RaceFolder:FindFirstChild("Circuit Race"):GetAttribute("RaceActive") and "Circuit Race  🟢" or "Circuit Race  🔴"
+        RacesQueueData[8] = RaceFolder:FindFirstChild("Desert Race"):GetAttribute("RaceActive") and "Desert Race  🟢" or "Desert Race  🔴"
+        RacesQueueData[9] = RaceFolder:FindFirstChild("Drag Race"):GetAttribute("RaceActive") and "Drag Race  🟢" or "Drag Race  🔴"
+        RacesQueueData[10] = RaceFolder:FindFirstChild("Highway Race"):GetAttribute("RaceActive") and "Highway Race  🟢" or "Highway Race  🔴"
+        RacesQueueData[11] = RaceFolder:FindFirstChild("Miami City Circuit"):GetAttribute("RaceActive") and "Miami City Circuit 🟢" or "Miami City Circuit  🔴"
+        RacesQueueData[12] = RaceFolder:FindFirstChild("Mountain Dash"):GetAttribute("RaceActive") and "Mountain Dash  🟢" or "Mountain Dash  🔴"
+        RacesQueueData[13] = RaceFolder:FindFirstChild("Offroad Race"):GetAttribute("RaceActive") and "Offroad Race  🟢" or "Offroad Race  🔴"
+        RacesQueueData[14] = RaceFolder:FindFirstChild("Tropical Dash"):GetAttribute("RaceActive") and "Tropical Dash  🟢" or "Tropical Dash  🔴"
+        textLabel = getParagraphLabel(Queque)
+        warn("Checking")
+        if textLabel then
+            textLabel.Text = table.concat(RacesQueueData, "\n")
+            warn("Update Successfully!")
+        end
+        end
+    end)
+end)
+
+
+
+
+
+
+user.CharacterAdded:Connect(function(newChar)
+	char = newChar
+	WaitUntilAlive()
+	root = char:FindFirstChild("HumanoidRootPart")
+	task.wait(1)
+end)
+
+Window:SelectTab(1)
+
+Fluent:Notify({
+    Title = "Info",
+    Content = "The script has been loaded.",
+    Duration = 4
+})
