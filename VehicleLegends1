@@ -45,7 +45,7 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
  
 local Window = Fluent:CreateWindow({
     Title = "Anchor Hub",
-    SubTitle = "EXAM SCRIPT NOR RELEASE YET YOU FOOL.",
+    SubTitle = "EXAMPLE SCRIPT THIS WAS NOT RELEASE YET YOU FOOL.",
     TabWidth = 160,
     Size = UDim2.fromOffset(500, 320),
     Acrylic = false,
