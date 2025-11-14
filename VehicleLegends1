@@ -818,7 +818,7 @@ end
 
         local highlight11
 
-        local highway = Tabs.Race:AddToggle("HighwayRace", {Title = "Auto Highway Race", Default = false })
+        local highway = Tabs.Race:AddToggle("HighwayRace", {Title = "Auto Highway Race [Ts bug asf]", Default = false })
 
     highway:OnChanged(function(bool)
 
@@ -868,10 +868,7 @@ TweenValue.Changed:Connect(function()
     end
     car:WaitForChild("VehicleSeat").AssemblyLinearVelocity = Vector3.new(0,1,0)
     car:PivotTo(TweenValue.Value)
-end)      
-if not game:GetService("Workspace").Races:WaitForChild("Highway Race"):GetAttribute("RaceActive") then
-break
-end      
+end)        
 local OnTween = TweenService:Create(TweenValue, TweenInfoToUse, {Value=checkpointsFolder[tostring(i)].Display.Checkpoint.Border.CFrame * CFrame.new(0,3.5,0)})
 OnTween:Play()
  OnTween.Completed:Wait()
@@ -1120,10 +1117,8 @@ spawn(function()
         RacesQueueData[13] = RaceFolder:FindFirstChild("Offroad Race"):GetAttribute("RaceActive") and "Offroad Race  🟢" or "Offroad Race  🔴"
         RacesQueueData[14] = RaceFolder:FindFirstChild("Tropical Dash"):GetAttribute("RaceActive") and "Tropical Dash  🟢" or "Tropical Dash  🔴"
         textLabel = getParagraphLabel(Queque)
-        warn("Checking")
         if textLabel then
             textLabel.Text = table.concat(RacesQueueData, "\n")
-            warn("Update Successfully!")
         end
         end
     end)
