@@ -45,7 +45,7 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
  
 local Window = Fluent:CreateWindow({
     Title = "Anchor Hub",
-    SubTitle = "EXAMPLE SCRIPT THIS WAS NOT RELEASE YET YOU FOOL.",
+    SubTitle = "EXAM SCRIPT NOR RELEASE YET YOU FOOL.",
     TabWidth = 160,
     Size = UDim2.fromOffset(500, 320),
     Acrylic = false,
@@ -259,8 +259,14 @@ end
 
     local map = Tabs.Race:AddToggle("AroundTheMapRace", {Title = "Auto Around The Map Race", Default = false })
 
-    map:OnChanged(function(bool)
+    map:OnChanged(function(NO)
 
+Fluent:Notify({
+    Title = "Info",
+    Content = "This was down for a while wait until i fix this (I was lazy lol).",
+    Duration = 5
+})
+    
     local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
 if bool then
     if not highlight3 then
@@ -279,7 +285,7 @@ else
     end
 end
 
-    getfenv().Around = (bool and true or false)
+getfenv().Around = (bool and true or false)
 while getfenv().Around do
 if getfenv().Around == false and not game:GetService("Workspace").Races:WaitForChild("Around The Map"):GetAttribute("RaceActive") then return end
 task.wait()
