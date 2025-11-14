@@ -45,11 +45,11 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
  
 local Window = Fluent:CreateWindow({
     Title = "Anchor Hub",
-    SubTitle = "EXAM SCRIPT NOR RELEASE YET YOU FOOL.",
+    SubTitle = "EXAMPLE SCRIPT NOT RELEASE YET YOU FOOL.",
     TabWidth = 160,
     Size = UDim2.fromOffset(500, 320),
     Acrylic = false,
-    Theme = "Darker",
+    Theme = "Aqua",
     MinimizeKey = Enum.KeyCode.K
 })
  
@@ -63,7 +63,8 @@ local Tabs = {
     PlaneRace = Window:AddTab({ Title = "Plane racing", Icon = "plane" }),
     Vehi = Window:AddTab({ Title = "Vehicle", Icon = "car" }),
     Player = Window:AddTab({ Title = "Player", Icon = "users" }),
-    Races = Window:AddTab({ Title = "Races Status", Icon = "file" })
+    Races = Window:AddTab({ Title = "Races Status", Icon = "file" }),
+    Ui = Window:AddTab({ Title = "Ui Setting", Icon = "paintbrush" })
 }
 
 
@@ -117,7 +118,7 @@ local Tabs = {
 
     local highlight1
 
-    local circuit = Tabs.Race:AddToggle("CircuitRace", {Title = "Auto Circuit Race", Default = false })
+    local circuit = Tabs.Race:AddToggle("CircuitRace", {Title = "Auto Circuit Race [Best for money]", Default = false })
 
     circuit:OnChanged(function(bool)
 
@@ -264,7 +265,7 @@ if NO then
 Fluent:Notify({
     Title = "Info [Auto Around The Map Race]",
     Content = "This function was down for a while, So wait until i fix this problem (I was too lazy lol).",
-    Duration = 5
+    Duration = 8
 })
 else
 warn("Off")
@@ -826,7 +827,7 @@ end
 
         local highlight11
 
-        local highway = Tabs.Race:AddToggle("HighwayRace", {Title = "Auto Highway Race [Ts bug asf]", Default = false })
+        local highway = Tabs.Race:AddToggle("HighwayRace", {Title = "Auto Highway Race", Default = false })
 
     highway:OnChanged(function(bool)
 
@@ -834,7 +835,7 @@ if bool then
 Fluent:Notify({
     Title = "Info [Auto Highway Race]",
     Content = "This auto race still have some bugs that make you farm slower so use other one to grinding :D.",
-    Duration = 5
+    Duration = 20
 })
 else
 warn("Off")
@@ -1155,6 +1156,14 @@ user.CharacterAdded:Connect(function(newChar)
 end)
 
 Window:SelectTab(1)
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+
+SaveManager:IgnoreThemeSettings()
+
+InterfaceManager:BuildInterfaceSection(Tabs.Ui)
+SaveManager:BuildConfigSection(Tabs.Ui)
 
 Fluent:Notify({
     Title = "Info",
