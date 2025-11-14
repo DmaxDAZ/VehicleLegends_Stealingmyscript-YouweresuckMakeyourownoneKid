@@ -262,8 +262,8 @@ end
     map:OnChanged(function(NO)
 
 Fluent:Notify({
-    Title = "Info",
-    Content = "This was down for a while wait until i fix this (I was lazy lol).",
+    Title = "Info [Auto Around The Map Race]",
+    Content = "This was down for a while wait until i fix this problem (I was too lazy lol).",
     Duration = 5
 })
     
@@ -827,6 +827,13 @@ end
         local highway = Tabs.Race:AddToggle("HighwayRace", {Title = "Auto Highway Race [Ts bug asf]", Default = false })
 
     highway:OnChanged(function(bool)
+
+
+Fluent:Notify({
+    Title = "Info [Auto Highway Race]",
+    Content = "This auto race still have some bugs that make you farm slower so use other one to grinding :D.",
+    Duration = 5
+})
 
     local car = game:GetService("Workspace").Vehicles:FindFirstChild(game.Players.LocalPlayer.Name.."'s Car")
 if bool then
