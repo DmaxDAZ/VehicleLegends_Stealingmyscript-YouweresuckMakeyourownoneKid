@@ -29,7 +29,7 @@ local RacesQueueData = {
 }
 
 
-_G.FarmSped = 250
+_G.FarmSped = 300
 
 local function WaitUntilAlive()
 	repeat
@@ -99,20 +99,18 @@ local Tabs = {
 
     local speed = Tabs.Setting:AddDropdown("FarmSped", {
         Title = "Auto Race Speed",
-        Values = {"250", "300", "325", "350"},
+        Values = {"Slow", "Normal", "Fast"},
         Multi = false,
-        Default = 1,
+        Default = 2,
     })
 
     speed:OnChanged(function(Value)
-        if Value == "250" then
+        if Value == "Slow" then
             _G.FarmSped = 250
-        elseif Value == "300" then
+        elseif Value == "Normal" then
             _G.FarmSped = 300
-        elseif Value == "325" then
+        elseif Value == "Fast" then
             _G.FarmSped = 325
-        elseif Value == "350" then
-            _G.FarmSped = 350
         end
     end)
 
